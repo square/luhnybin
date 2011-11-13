@@ -18,7 +18,7 @@ package com.squareup.luhnybin;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LuhnTest {
+public class LastDigitTest {
 
   @Test public void computeLastDigit() {
     Assert.assertEquals('1', LuhnTests.computeLast("411111111111111"));

@@ -16,9 +16,12 @@
 package com.squareup.luhnybin;
 
 import com.google.common.io.ByteStreams;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * Runs the test suite against mask.sh.
@@ -33,8 +36,9 @@ public class Main extends TestSuite {
       System.exit(1);
     }
 
-    int iterations = 1;
+    final int iterations;
     if (args.length > 0) {
+      System.out.println(Arrays.toString(args));
       if (args.length > 1) {
         System.err.println("Usage: ./run.sh [iterations]");
         System.exit(1);
@@ -45,10 +49,16 @@ public class Main extends TestSuite {
         System.err.println("Iterations must be >= 1.");
         System.exit(1);
       }
+    } else {
+      iterations = 1;
     }
 
     final LuhnTests luhnTests = new LuhnTests();
-    final Process process = new ProcessBuilder("mask.sh").start();
+    final Process process = new ProcessBuilder("sh", "mask.sh").start();
+
+    // Buffer output for maximum efficiency.
+    final ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    luhnTests.writeTo(bout);
 
     long start = System.nanoTime();
 
@@ -56,7 +66,7 @@ public class Main extends TestSuite {
       @Override public void run() {
         try {
           OutputStream out = process.getOutputStream();
-          luhnTests.writeTo(out);
+          for (int i = 0; i < iterations; i++) bout.writeTo(out);
           out.close();
         } catch (IOException e) {
           e.printStackTrace();
@@ -76,14 +86,17 @@ public class Main extends TestSuite {
 
     try {
       for (int i = 0; i < iterations; i++) luhnTests.check(process.getInputStream());
-      // TODO: Check for extraneous output.
       long elapsed = (System.nanoTime() - start) / 1000000;
       System.out.println("Tests passed! (" + elapsed + "ms)");
+    } catch (EOFException e) {
+      System.err.println("mask.sh didn't send enough output.");
     } catch (TestFailure testFailure) {
-      System.err.println("Test failed: " + testFailure.testCase.description);
-      System.err.println("Output:          " + testFailure.testCase.output);
-      System.err.println("Expected result: " + testFailure.testCase.expectedInput);
-      System.err.println("Actual result:   " + testFailure.actualInput);
+      System.err.println("Test failed:"
+          + "\n  Description:     " + testFailure.testCase.description
+          + "\n  Input:           " + testFailure.testCase.output
+          + "\n  Expected result: " + testFailure.testCase.expectedInput
+          + "\n  Actual result:   " + testFailure.actualInput
+          + "\n");
     }
   }
 }

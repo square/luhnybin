@@ -135,8 +135,6 @@ public class LuhnTests extends TestSuite {
     StringBuilder output = new StringBuilder(randomNumber(MAX_LENGTH));
     for (int i = 0; i < 1000 - MAX_LENGTH; i++) {
       output.append(computeLast(output.subSequence(i + 1, i + MAX_LENGTH)));
-      if (random.nextInt(20) == 0) output.append(' ');
-      if (random.nextInt(20) == 0) output.append('-');
     }
 
     test("sequence of overlapping, valid #s")
