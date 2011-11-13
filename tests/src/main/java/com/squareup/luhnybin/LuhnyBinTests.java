@@ -192,7 +192,7 @@ public class LuhnyBinTests extends TestSuite {
     int sum = 0;
     for (int i = allButLast.length() - 1; i >= 0; i -= 2) {
       int value = (checkDigit(allButLast.charAt(i)) - '0') << 1;
-      sum += value > 9 ? 1 + value - 10 : value;
+      sum += value > 9 ? value - 9 : value;
     }
     for (int i = allButLast.length() - 2; i >= 0; i -= 2) {
       sum += checkDigit(allButLast.charAt(i)) - '0';
