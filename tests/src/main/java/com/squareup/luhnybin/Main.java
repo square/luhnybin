@@ -21,7 +21,6 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 
 /**
  * Runs the test suite against mask.sh.
@@ -38,7 +37,6 @@ public class Main extends TestSuite {
 
     final int iterations;
     if (args.length > 0) {
-      System.out.println(Arrays.toString(args));
       if (args.length > 1) {
         System.err.println("Usage: ./run.sh [iterations]");
         System.exit(1);
@@ -78,9 +76,7 @@ public class Main extends TestSuite {
       @Override public void run() {
         try {
           ByteStreams.copy(process.getErrorStream(), System.err);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+        } catch (IOException e) { /* ignore */ }
       }
     }.start();
 
@@ -97,6 +93,8 @@ public class Main extends TestSuite {
           + "\n  Expected result: " + testFailure.testCase.expectedInput
           + "\n  Actual result:   " + testFailure.actualInput
           + "\n");
+      process.destroy();
+      System.exit(1);
     }
   }
 }
