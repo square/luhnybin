@@ -51,12 +51,12 @@ public class Main extends TestSuite {
       iterations = 1;
     }
 
-    final LuhnTests luhnTests = new LuhnTests();
+    final LuhnyBinTests luhnyBinTests = new LuhnyBinTests();
     final Process process = new ProcessBuilder("sh", "mask.sh").start();
 
     // Buffer output for maximum efficiency.
     final ByteArrayOutputStream bout = new ByteArrayOutputStream();
-    luhnTests.writeTo(bout);
+    luhnyBinTests.writeTo(bout);
 
     long start = System.nanoTime();
 
@@ -81,20 +81,24 @@ public class Main extends TestSuite {
     }.start();
 
     try {
-      for (int i = 0; i < iterations; i++) luhnTests.check(process.getInputStream());
+      for (int i = 0; i < iterations; i++) luhnyBinTests.check(process.getInputStream());
       long elapsed = (System.nanoTime() - start) / 1000000;
       System.out.println("Tests passed! (" + elapsed + "ms)");
     } catch (EOFException e) {
-      System.err.println("mask.sh didn't send enough output.");
+      System.err.println("Error: mask.sh didn't send the expected amount of output.");
     } catch (TestFailure testFailure) {
       System.err.println("Test failed:"
           + "\n  Description:     " + testFailure.testCase.description
-          + "\n  Input:           " + testFailure.testCase.output
-          + "\n  Expected result: " + testFailure.testCase.expectedInput
-          + "\n  Actual result:   " + testFailure.actualInput
+          + "\n  Input:           " + showBreaks(testFailure.testCase.output)
+          + "\n  Expected result: " + showBreaks(testFailure.testCase.expectedInput)
+          + "\n  Actual result:   " + showBreaks(testFailure.actualInput)
           + "\n");
       process.destroy();
       System.exit(1);
     }
+  }
+
+  static String showBreaks(String s) {
+    return s.replace("\n", "\\n").replace("\r", "\\r");
   }
 }

@@ -21,11 +21,11 @@ import org.junit.Test;
 public class LastDigitTest {
 
   @Test public void computeLastDigit() {
-    Assert.assertEquals('1', LuhnTests.computeLast("411111111111111"));
-    Assert.assertEquals('2', LuhnTests.computeLast("422222222222"));
-    Assert.assertEquals('1', LuhnTests.computeLast("37144963539843"));
-    Assert.assertEquals('0', LuhnTests.computeLast("561059108101825"));
-    Assert.assertEquals('5', LuhnTests.computeLast("356600202036050"));
-    Assert.assertEquals('4', LuhnTests.computeLast("555555555555444"));
+    Assert.assertEquals('1', LuhnyBinTests.computeLast("411111111111111"));
+    Assert.assertEquals('2', LuhnyBinTests.computeLast("422222222222"));
+    Assert.assertEquals('1', LuhnyBinTests.computeLast("37144963539843"));
+    Assert.assertEquals('0', LuhnyBinTests.computeLast("561059108101825"));
+    Assert.assertEquals('5', LuhnyBinTests.computeLast("356600202036050"));
+    Assert.assertEquals('4', LuhnyBinTests.computeLast("555555555555444"));
   }
 }

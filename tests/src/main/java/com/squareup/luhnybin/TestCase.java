@@ -41,11 +41,11 @@ class TestCase {
 
   TestCase(String description, String output, String expectedInput) {
     this.description = description;
-    this.output = output;
-    this.outputBytes = withBreak(output).getBytes(ASCII);
-    this.expectedInput = expectedInput;
-    this.expectedInputBytes = withBreak(expectedInput).getBytes(ASCII);
-    this.buffer = new byte[expectedInput.length()];
+    this.output = withBreak(output);
+    this.outputBytes = this.output.getBytes(ASCII);
+    this.expectedInput = withBreak(expectedInput);
+    this.expectedInputBytes = this.expectedInput.getBytes(ASCII);
+    this.buffer = new byte[expectedInputBytes.length];
   }
 
   private static String withBreak(String s) {
