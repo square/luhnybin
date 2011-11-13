@@ -30,6 +30,7 @@ class TestSuite {
 
   private TestCase.Builder builder;
   private List<TestCase> testCases = new ArrayList<TestCase>();
+  int count = 0;
 
   Output test(String description) {
     if (builder != null) {
@@ -38,7 +39,7 @@ class TestSuite {
       }
       throw new IllegalStateException("Missing expected input for previous test.");
     }
-    builder = new TestCase.Builder(description);
+    builder = new TestCase.Builder(description, ++count);
     return new Output();
   }
 
