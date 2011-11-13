@@ -83,16 +83,20 @@ public class LuhnyBinTests extends TestSuite {
   }
 
   private void testFormatted(char delimeter) {
-    test("16-digit # delimited by '" + delimeter + "'")
+    test("16-digit # formatted with '" + delimeter + "'")
         .send(formattedNumber(delimeter))
         .expect(formattedMask(delimeter));
   }
 
   private static String formattedNumber(char delimeter) {
-    String number = randomNumber(16);
+    return formatNumber(randomNumber(16), delimeter);
+  }
+
+  static String formatNumber(String number, char delimeter) {
+    if (number.length() != 16) throw new IllegalArgumentException("Expected length of 16.");
     StringBuilder formatted = new StringBuilder();
     for (int i = 0; i < 4; i++) {
-      formatted.append(number.substring(i, i + 4));
+      formatted.append(number.substring(i * 4, (i * 4) + 4));
       if (i < 3) formatted.append(delimeter);
     }
     return formatted.toString();
