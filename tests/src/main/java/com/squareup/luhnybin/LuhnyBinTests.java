@@ -20,11 +20,11 @@ import java.util.BitSet;
 import java.util.Random;
 
 /**
- * Luhn test cases.
+ * Luhny Bin test cases.
  *
  * @author Bob Lee (bob@squareup.com)
  */
-public class LuhnTests extends TestSuite {
+public class LuhnyBinTests extends TestSuite {
 
   private static final char MASK = 'X';
 
@@ -33,7 +33,12 @@ public class LuhnTests extends TestSuite {
 
   private static final Random random = new Random(0xDEADBEEF);
 
-  LuhnTests() {
+  LuhnyBinTests() {
+    String lineFeed = "LF only ->\n<- LF only";
+    test("line feed preservation")
+        .send(lineFeed)
+        .expect(lineFeed);
+
     for (int i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
       test(i + "-digit #")
           .send(randomNumber(i))
