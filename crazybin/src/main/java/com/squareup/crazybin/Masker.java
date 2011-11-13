@@ -19,13 +19,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main {
+public class Masker {
   public static void main(String[] args) throws IOException {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in, "US-ASCII"));
     String line;
-    while ((line = in.readLine()) != null) {
-      System.out.print(mask(line) + "\n");
-    }
+    while ((line = in.readLine()) != null) System.out.print(mask(line) + "\n");
   }
 
   static final int MIN_LENGTH = 14;
@@ -114,27 +112,29 @@ public class Main {
     }
 
     void push(char digit) {
-      int value = digit - '0';
-
-      // The following function applies to every other digit.
-      // Multiply by two.
-      int product = value << 1;
-      if (product > 9) {
-        // Add the individual digits together. Example: 13 -> 1 + 3 = 4
-        product = product - 9;
-      }
-
-      // Swap sum arrays.
-      int[] temp = currentSums;
-      currentSums = nextSums;
-      nextSums = temp;
-
       // Luhn starts from the right with an unmodified digit.
+      int value = digit - '0';
+      int doubled = doubleAndSumDigits(value);
+
+      swapArrays();
+
       accumulate(currentSums, value);
-      accumulate(nextSums, product);
+      accumulate(nextSums, doubled);
 
       end = wrap(end + 1);
       if (length < MAX_LENGTH) length++;
+    }
+
+    private static int doubleAndSumDigits(int value) {
+      // assert 0 <= value <= 9
+      int result = value << 1;
+      return result > 9 ? result - 9 : result;
+    }
+
+    private void swapArrays() {
+      int[] temp = currentSums;
+      currentSums = nextSums;
+      nextSums = temp;
     }
 
     private void accumulate(int[] sums, int value) {
