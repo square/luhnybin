@@ -87,10 +87,11 @@ public class Main extends TestSuite {
     } catch (EOFException e) {
       System.err.println("Error: mask.sh didn't send the expected amount of output.");
     } catch (TestFailure testFailure) {
-      System.err.println("Test failed:"
-          + "\n  Description:     " + testFailure.testCase.description
-          + "\n  Input:           " + showBreaks(testFailure.testCase.output)
-          + "\n  Expected result: " + showBreaks(testFailure.testCase.expectedInput)
+      TestCase test = testFailure.testCase;
+      System.err.println("Test #" + test.index + " of " + luhnyBinTests.count + " failed:"
+          + "\n  Description:     " + test.description
+          + "\n  Input:           " + showBreaks(test.output)
+          + "\n  Expected result: " + showBreaks(test.expectedInput)
           + "\n  Actual result:   " + showBreaks(testFailure.actualInput)
           + "\n");
       process.destroy();

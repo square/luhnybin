@@ -32,6 +32,7 @@ class TestCase {
   private static final Charset ASCII = Charset.forName("US-ASCII");
 
   final String description;
+  final int index;
   final String output;
   final String expectedInput;
 
@@ -39,8 +40,9 @@ class TestCase {
   private final byte[] expectedInputBytes;
   private final byte[] buffer;
 
-  TestCase(String description, String output, String expectedInput) {
+  TestCase(String description, int index, String output, String expectedInput) {
     this.description = description;
+    this.index = index;
     this.output = withBreak(output);
     this.outputBytes = this.output.getBytes(ASCII);
     this.expectedInput = withBreak(expectedInput);
@@ -71,19 +73,21 @@ class TestCase {
 
   static class Builder {
 
-    String description;
+    final String description;
     String output;
     String expectedInput;
+    final int index;
 
-    public Builder(String description) {
+    public Builder(String description, int index) {
       this.description = description;
+      this.index = index;
     }
 
     TestCase build() {
       if (description == null || output == null || expectedInput == null) {
         throw new AssertionError();
       }
-      return new TestCase(description, output, expectedInput);
+      return new TestCase(description, index, output, expectedInput);
     }
   }
 }
