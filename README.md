@@ -21,13 +21,13 @@ For example, "5678" passes the Luhn check:
 
 1. Double every other digit: 10, 6, 14, 8
 1. Sum the individual digits: (1 + 0) + 6 + (1 + 4) + 8 = 20
-1. Divide the result by 10: 20 mod 10 = 0 **(Pass)**
+1. Divide the result by 10: 20 mod 10 = 0 <b><font color="green">Pass</font></b>
 
 "6789" does not:
 
 1. Double every other digit: 12, 7, 16, 9
 1. Sum the individual digits: (1 + 2) + 7 + (1 + 6) + 9 = 26
-1. Divide the result by 10: 26 mod 10 != 0 **(Fail)**
+1. Divide the result by 10: 26 mod 10 != 0 <b><font color="red">Fail</font></b>
 
 Now for the challenge...
 ------------------------
