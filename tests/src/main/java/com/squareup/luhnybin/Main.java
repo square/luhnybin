@@ -66,6 +66,9 @@ public class Main extends TestSuite {
       }
     });
 
+    System.out.println("Running tests against mask.sh...");
+    System.out.println();
+
     final LuhnyBinTests luhnyBinTests = new LuhnyBinTests();
     final Process process = new ProcessBuilder("sh", "mask.sh").start();
 
