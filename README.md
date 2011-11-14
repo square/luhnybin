@@ -3,7 +3,7 @@ Coding Challenge: The Luhny Bin
 
 > "To err is human; to forgive, divine." -Alexander Pope
 
-Computers break. Mistakes happen. At Square, we treat human error as a given. We anticipate potential slip-ups and implement safety measures to mitigate&mdash;and oftentimes completely eliminate&mdash;any repercussions.
+Computers break. Mistakes happen. At Square, we accept that human error is inevitable. We anticipate potential slip-ups and implement safety measures to mitigate&mdash;and oftentimes completely eliminate&mdash;any repercussions.
 
 For example, Square's Luhn filter monitors logs and masks anything that looks like a credit card number. If a number like "4111 1111 1111 1111" were accidentally logged as part of an error message, our filter would replace it with "XXXX XXXX XXXX XXXX" and page an on call engineer.
 
