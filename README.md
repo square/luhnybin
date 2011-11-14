@@ -30,9 +30,12 @@ For example, "5678" passes the Luhn check:
 2. Sum the individual digits: (1 + 2) + 7 + (1 + 6) + 9 = 26
 3. Divide the result by 10: 26 mod 10 != 0 **(Fail)**
 
-*Now for the challenge.*
+Now for the challenge...
+------------------------
 
-Write a program that reads data from standard input, masks sequences of digits that look like credit card numbers, and writes the filtered data to standard output. For the purposes of this challenge, a credit card number:
+You find yourself trapped by a crippling but otherwise healthy fear of accidentally leaking credit card numbers. Your only escape: implement a [Unix-style program](http://en.wikipedia.org/wiki/Unix_philosophy#McIlroy:_A_Quarter_Century_of_Unix) that masks credit card numbers in text streams. Your program must pass a series of increasingly difficult challenges.
+
+Write a command line program that reads data from standard input, masks sequences of digits that look like credit card numbers, and writes the filtered data to standard output. For the purposes of this challenge, a credit card number:
 
 - Is between 14 and 16 characters long, inclusive.
 - Passes the Luhn check.
