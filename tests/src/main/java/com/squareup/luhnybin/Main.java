@@ -34,6 +34,8 @@ import java.util.concurrent.ThreadFactory;
  */
 public class Main extends TestSuite {
 
+  private static int testsPassed = 0;
+
   public static void main(String[] args) throws IOException {
     if (!new File("mask.sh").exists()) {
       System.err.println("Couldn't find 'mask.sh' in the current directory.");
@@ -103,15 +105,34 @@ public class Main extends TestSuite {
           }
         });
         
-        luhnyBinTests.check(in);
+        luhnyBinTests.check(in, new TestCase.Listener() {
+          public void testPassed(TestCase test) {
+            System.out.print('.');
+            if (++testsPassed % 80 == 0) System.out.println();
+          }
+
+          public void testFailed(TestCase test, String actualInput) {
+            System.out.println('X');
+            System.out.println();
+            System.err.println("Test #" + test.index + " of " + luhnyBinTests.count + " failed:"
+                + "\n  Description:     " + test.description
+                + "\n  Input:           " + showBreaks(test.output)
+                + "\n  Expected result: " + showBreaks(test.expectedInput)
+                + "\n  Actual result:   " + showBreaks(actualInput)
+                + "\n");
+            process.destroy();
+            System.exit(1);
+          }
+        });
         times[i] = (System.nanoTime() - iterationStart) / 1000;
       }
 
       out.close();
 
       long elapsed = (System.nanoTime() - start) / 1000000;
+
       System.out.println();
-      System.out.println();
+      if (testsPassed % 80 != 0) System.out.println();
       System.out.println("Tests passed!");
       System.out.println();
       System.out.printf("Total time:   %dms%n", elapsed);
@@ -127,18 +148,10 @@ public class Main extends TestSuite {
       }
 
       System.out.println();
+      process.destroy();
       System.exit(0);
     } catch (EOFException e) {
       System.err.println("Error: mask.sh didn't send the expected amount of output.");
-      System.exit(1);
-    } catch (TestFailure testFailure) {
-      TestCase test = testFailure.testCase;
-      System.err.println("Test #" + test.index + " of " + luhnyBinTests.count + " failed:"
-          + "\n  Description:     " + test.description
-          + "\n  Input:           " + showBreaks(test.output)
-          + "\n  Expected result: " + showBreaks(test.expectedInput)
-          + "\n  Actual result:   " + showBreaks(testFailure.actualInput)
-          + "\n");
       process.destroy();
       System.exit(1);
     }

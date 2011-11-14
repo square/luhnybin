@@ -58,9 +58,7 @@ class TestCase {
     out.write(outputBytes);
   }
 
-  private static int count;
-
-  void check(InputStream in) throws TestFailure, IOException {
+  void check(InputStream in, Listener listener) throws IOException {
     int read = 0;
     while (read < buffer.length) {
       int result = in.read(buffer, read, buffer.length - read);
@@ -68,13 +66,11 @@ class TestCase {
       read += result;
     }
 
-    if (!Arrays.equals(expectedInputBytes, buffer)) {
-      System.out.println("X\n");
-      throw new TestFailure(this, new String(buffer, ASCII));
+    if (Arrays.equals(expectedInputBytes, buffer)) {
+      listener.testPassed(this);
+    } else {
+      listener.testFailed(this, new String(buffer, ASCII));
     }
-
-    System.out.print(".");
-    if (++count % 80 == 0) System.out.println(); // Wrap.
   }
 
   static class Builder {
@@ -95,5 +91,10 @@ class TestCase {
       }
       return new TestCase(description, index, output, expectedInput);
     }
+  }
+
+  interface Listener {
+    void testPassed(TestCase test);
+    void testFailed(TestCase test, String actualInput);
   }
 }
