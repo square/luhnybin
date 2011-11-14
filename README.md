@@ -47,10 +47,10 @@ I already wrote a test suite, so you can jump straight to the fun part: writing 
 1. Fork the [Luhny Bin GitHub repo](https://github.com/square/luhnybin).
 2. Modify `mask.sh` to call your program.
 3. Test your program by executing `run.sh`.
-4. Once `run.sh` passes, post a link to your solution in the comments on [our blog](http://corner.squareup.com/).
+4. Once `run.sh` passes, post a link to your solution in the comments on [our blog](http://corner.squareup.com/2011/11/luhny-bin.html).
 
 Please make it easy for someone else to check out and run your solution.
 
 The test suite outputs ASCII-encoded data. It expects the same for input. [Line feeds](http://en.wikipedia.org/wiki/Newline) delineate the test cases. If you pass a number on the command line, `run.sh` will repeat the test suite the specified number of times; this is useful for performance comparisons. The tests aren't set in stone&mdash;if you have an idea for improving the test suite, please submit a pull request. Windows users should use [Cygwin](http://www.cygwin.com/) to run the tests.
 
-Once we have enough interesting submissions, I'll post a followup to [our blog](http://corner.squareup.com/) summarizing the results. Good luck!
+Once we have enough interesting submissions, I'll post a followup to [our blog](http://corner.squareup.com/) summarizing the results. I'll open source our own Java-based solution after everyone has had time to give the problem a shot. Good luck!
