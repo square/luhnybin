@@ -36,9 +36,9 @@ You find yourself trapped by a crippling but otherwise healthy fear of accidenta
 
 Think you've got what it takes? Write a command line program that reads text from standard input, masks sequences of digits that look like credit card numbers, and writes the filtered text to standard output. For the purposes of this challenge, a credit card number:
 
-- Is between 14 and 16 characters long, inclusive.
+- Has between 14 and 16 digits, inclusive.
 - Passes the Luhn check.
-- Can contain any combination of `' '` or `'-'` characters.
+- Can contain any number and combination of `' '` or `'-'` characters.
 
 If a sequence of digits looks like a credit card number, replace each digit with an `'X'`. Any characters, including digits, may flank a credit card number. *Beware:* A valid 16-digit number can contain a valid 14 or 15-digit number. Your program must mask every digit.
 
