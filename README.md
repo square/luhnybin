@@ -30,7 +30,7 @@ For example, "5678" passes the Luhn check:
 2. Sum the individual digits: (1 + 2) + 7 + (1 + 6) + 9 = 26
 3. Divide the result by 10: 26 mod 10 != 0 **(Fail)**
 
-**Now for the challenge.**
+*Now for the challenge.*
 
 Write a program that reads data from standard input, masks sequences of digits that look like credit card numbers, and writes the filtered data to standard output. For the purposes of this challenge, a credit card number:
 
