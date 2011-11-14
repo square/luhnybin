@@ -34,7 +34,7 @@ Now for the challenge...
 
 You find yourself trapped by a crippling but otherwise healthy fear of accidentally leaking credit card numbers. Your only escape: implement a [Unix-style program](http://en.wikipedia.org/wiki/Unix_philosophy#McIlroy:_A_Quarter_Century_of_Unix) that masks credit card numbers in text streams. Your program must pass a series of increasingly difficult challenges.
 
-Think you've got what it takes? Write a command line program that reads text from standard input, masks sequences of digits that look like credit card numbers, and writes the filtered text to standard output. For the purposes of this challenge, a credit card number:
+Think you've got what it takes? Write a command line program that reads ASCII text from standard input, masks sequences of digits that look like credit card numbers, and writes the filtered text to standard output. For the purposes of this challenge, a credit card number:
 
 - Has between 14 and 16 digits, inclusive.
 - Passes the Luhn check.
@@ -66,6 +66,6 @@ The first time you execute `run.sh`, you'll see a test failure:
       Expected result: XXXXXXXXXXXXXX\n
       Actual result:   56613959932537\n
 
-Modify `mask.sh` and make the tests pass. The test suite outputs ASCII-encoded data; it expects the same for input. [Line feeds](http://en.wikipedia.org/wiki/Newline) delineate the test cases. If you pass a number on the command line, `run.sh` will repeat the test suite the specified number of times; this is useful for performance comparisons. The tests aren't set in stone&mdash;if you have an idea for improving the test suite, please submit a pull request.
+Modify `mask.sh` and make the tests pass. [Line feeds](http://en.wikipedia.org/wiki/Newline) delineate the test cases. If you pass a number on the command line, `run.sh` will repeat the test suite the specified number of times; this is useful for performance comparisons. The tests aren't set in stone&mdash;if you have an idea for improving the test suite, please submit a pull request.
 
 Once we have enough interesting submissions, I'll post a followup to [our blog](http://corner.squareup.com/) summarizing the results. I'll open source our own Java-based solution after everyone has had time to give the problem a shot. Good luck!
