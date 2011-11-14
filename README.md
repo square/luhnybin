@@ -64,8 +64,6 @@ The first time you execute `run.sh`, you'll see a test failure:
       Expected result: XXXXXXXXXXXXXX\n
       Actual result:   56613959932537\n
 
-Modify `mask.sh` to make the tests pass.
-
-The test suite outputs ASCII-encoded data. It expects the same for input. [Line feeds](http://en.wikipedia.org/wiki/Newline) delineate the test cases. If you pass a number on the command line, `run.sh` will repeat the test suite the specified number of times; this is useful for performance comparisons. The tests aren't set in stone&mdash;if you have an idea for improving the test suite, please submit a pull request. Windows users should use [Cygwin](http://www.cygwin.com/) to run the tests.
+Modify `mask.sh` and make the tests pass. The test suite outputs ASCII-encoded data. It expects the same for input. [Line feeds](http://en.wikipedia.org/wiki/Newline) delineate the test cases. If you pass a number on the command line, `run.sh` will repeat the test suite the specified number of times; this is useful for performance comparisons. The tests aren't set in stone&mdash;if you have an idea for improving the test suite, please submit a pull request. Windows users should use [Cygwin](http://www.cygwin.com/) to run the tests.
 
 Once we have enough interesting submissions, I'll post a followup to [our blog](http://corner.squareup.com/) summarizing the results. I'll open source our own Java-based solution after everyone has had time to give the problem a shot. Good luck!
