@@ -34,16 +34,23 @@ public class LuhnyBinTests extends TestSuite {
   private static final Random random = new Random(0xDEADBEEF);
 
   LuhnyBinTests() {
-    String lineFeed = "LF only ->\n<- LF only";
-    test("line feed preservation")
-        .send(lineFeed)
-        .expect(lineFeed);
+    test("line feed preservation").sendAndExpect("LF only ->\n<- LF only");
 
     for (int i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
-      test(i + "-digit #")
+      test("valid " + i + "-digit #")
           .send(randomNumber(i))
           .expect(mask(i));
     }
+
+    for (int i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
+      test("non-matching " + i + "-digit #").sendAndExpect(nonMatchingSequence(i));
+    }
+
+    test("not enough digits").sendAndExpect(nonMatchingSequence(MIN_LENGTH - 1));
+
+    String tooMany = nonMatchingSequence(MAX_LENGTH);
+    tooMany += computeLast(tooMany);
+    test("too many digits").sendAndExpect(tooMany);
 
     test("14-digit # prefixed with 0s")
         .send("00" + randomNumber(14))
@@ -52,10 +59,6 @@ public class LuhnyBinTests extends TestSuite {
     test("14-digit # embedded in a 16-digit #")
         .send(nestedNumber())
         .expect(mask(16));
-
-    test("sequence of zeros")
-        .send(repeatingSequence('0', 1000))
-        .expect(mask(1000));
 
     test("16-digit # flanked by non-matching digits")
         .send("9875610591081018250321")
@@ -68,22 +71,21 @@ public class LuhnyBinTests extends TestSuite {
         .send("java.lang.FakeException: " + formattedNumber(' ') + " is a card #.")
         .expect("java.lang.FakeException: " + formattedMask(' ') + " is a card #.");
 
-    String nonMatching = "4111 1111 1111 111 doesn't have enough digits.";
-    test("non-matching message")
-        .send(nonMatching)
-        .expect(nonMatching);
+    test("non-matching message").sendAndExpect("4111 1111 1111 111 doesn't have enough digits.");
 
-    nonMatching = "56613959932535089 has too many digits.";
-    test("non-matching message")
-        .send(nonMatching)
-        .expect(nonMatching);
+    test("non-matching message").sendAndExpect("56613959932535089 has too many digits.");
+
+    test("sequence of zeros")
+        .send(repeatingSequence('0', 1000))
+        .expect(mask(1000));
 
     testOverlappingMatches();
-    testNonMatchingSequence();
+
+    test("long sequence of digits with no matches").sendAndExpect(nonMatchingSequence(1000));
   }
 
   private void testFormatted(char delimeter) {
-    test("16-digit # formatted with '" + delimeter + "'")
+    test("16-digit # delimited with '" + delimeter + "'")
         .send(formattedNumber(delimeter))
         .expect(formattedMask(delimeter));
   }
@@ -111,18 +113,18 @@ public class LuhnyBinTests extends TestSuite {
     return mask.toString();
   }
 
-  private void testNonMatchingSequence() {
+  /** Generates a sequence of digits with the specified length and no card #s. */
+  private String nonMatchingSequence(int length) {
     StringBuilder builder = new StringBuilder();
     DigitSet excluded = new DigitSet();
-    for (int lastIndex = 0; lastIndex < 1000; lastIndex++) {
+    for (int lastIndex = 0; lastIndex < length; lastIndex++) {
       excluded.clear();
 
       // Compute digits that would result in valid card #s.
-      for (int length = MIN_LENGTH; length <= MAX_LENGTH; length++) {
-        int start = lastIndex - (length - 1);
+      for (int subLength = MIN_LENGTH; subLength <= MAX_LENGTH; subLength++) {
+        int start = lastIndex - (subLength - 1);
         if (start < 0) break;
-        int end = lastIndex;
-        excluded.add(computeLast(builder.subSequence(start, end)));
+        excluded.add(computeLast(builder.subSequence(start, lastIndex)));
       }
 
       // Find a digit that doesn't result in a valid card #.
@@ -133,11 +135,7 @@ public class LuhnyBinTests extends TestSuite {
       builder.append(digit);
     }
 
-    String output = builder.toString();
-
-    test("non-matching sequence")
-        .send(output)
-        .expect(output);
+    return builder.toString();
   }
 
   private void testOverlappingMatches() {
@@ -146,7 +144,7 @@ public class LuhnyBinTests extends TestSuite {
       output.append(computeLast(output.subSequence(i + 1, i + MAX_LENGTH)));
     }
 
-    test("sequence of overlapping, valid #s")
+    test("long sequence of overlapping, valid #s")
         .send(output.toString())
         .expect(mask(output.length()));
   }

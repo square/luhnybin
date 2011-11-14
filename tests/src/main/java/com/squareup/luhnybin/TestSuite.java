@@ -61,6 +61,10 @@ class TestSuite {
       return new Input();
     }
 
+    void sendAndExpect(String s) {
+      send(s).expect(s);
+    }
+
     Input send(CharSequence output) {
       return send(output.toString());
     }
