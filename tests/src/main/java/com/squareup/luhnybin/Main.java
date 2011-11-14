@@ -104,25 +104,29 @@ public class Main extends TestSuite {
         });
         
         luhnyBinTests.check(in);
-        times[i] = (System.nanoTime() - iterationStart) / 1000000;
+        times[i] = (System.nanoTime() - iterationStart) / 1000;
       }
 
       out.close();
 
       long elapsed = (System.nanoTime() - start) / 1000000;
       System.out.println();
+      System.out.println();
       System.out.println("Tests passed!");
+      System.out.println();
       System.out.printf("Total time:   %dms%n", elapsed);
 
       if (iterations > 1) {
         long sum = 0;
         for (long time : times) sum += time;
-        System.out.printf("Mean time:    %dms%n", sum / times.length);
-        System.out.printf("Median time:  %dms%n", times[times.length / 2]);
-        System.out.printf("Fastest time: %dms%n", times[0]);
+
         Arrays.sort(times);
+        System.out.printf("Mean time:    %dµs%n", sum / times.length);
+        System.out.printf("Median time:  %dµs%n", times[times.length / 2]);
+        System.out.printf("Fastest time: %dµs%n", times[0]);
       }
 
+      System.out.println();
       System.exit(0);
     } catch (EOFException e) {
       System.err.println("Error: mask.sh didn't send the expected amount of output.");

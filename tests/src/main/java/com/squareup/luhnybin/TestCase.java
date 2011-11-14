@@ -58,6 +58,8 @@ class TestCase {
     out.write(outputBytes);
   }
 
+  private static int count;
+
   void check(InputStream in) throws TestFailure, IOException {
     int read = 0;
     while (read < buffer.length) {
@@ -72,6 +74,7 @@ class TestCase {
     }
 
     System.out.print(".");
+    if (++count % 80 == 0) System.out.println(); // Wrap.
   }
 
   static class Builder {
