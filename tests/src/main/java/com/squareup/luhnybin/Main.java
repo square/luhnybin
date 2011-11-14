@@ -20,7 +20,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Runs the test suite against mask.sh.
@@ -51,41 +56,77 @@ public class Main extends TestSuite {
       iterations = 1;
     }
 
+    final Executor executor = Executors.newCachedThreadPool(new ThreadFactory() {
+      public Thread newThread(Runnable r) {
+        Thread thread = new Thread(r);
+        thread.setDaemon(true);
+        return thread;
+      }
+    });
+
     final LuhnyBinTests luhnyBinTests = new LuhnyBinTests();
     final Process process = new ProcessBuilder("sh", "mask.sh").start();
+
+    // Copy error stream from child process.
+    executor.execute(new Runnable() {
+      public void run() {
+        try {
+          ByteStreams.copy(process.getErrorStream(), System.err);
+        } catch (IOException e) { /* ignore */ }
+      }
+    });
 
     // Buffer output for maximum efficiency.
     final ByteArrayOutputStream bout = new ByteArrayOutputStream();
     luhnyBinTests.writeTo(bout);
 
+    final OutputStream out = process.getOutputStream();
+    final InputStream in = process.getInputStream();
     long start = System.nanoTime();
-
-    new Thread() {
-      @Override public void run() {
-        try {
-          OutputStream out = process.getOutputStream();
-          for (int i = 0; i < iterations; i++) bout.writeTo(out);
-          out.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }.start();
-
-    new Thread() {
-      @Override public void run() {
-        try {
-          ByteStreams.copy(process.getErrorStream(), System.err);
-        } catch (IOException e) { /* ignore */ }
-      }
-    }.start();
-
     try {
-      for (int i = 0; i < iterations; i++) luhnyBinTests.check(process.getInputStream());
+      // Time/iteration in ms.
+      long[] times = new long[iterations];
+
+      for (int i = 0; i < iterations; i++) {
+        long iterationStart = System.nanoTime();
+
+        // Write in the background. Writing can block if the buffer fills up.
+        executor.execute(new Runnable() {
+          public void run() {
+            try {
+              bout.writeTo(out);
+              out.flush();
+            } catch (IOException e) {
+              e.printStackTrace();
+              System.exit(1);
+            }
+          }
+        });
+        
+        luhnyBinTests.check(in);
+        times[i] = (System.nanoTime() - iterationStart) / 1000000;
+      }
+
+      out.close();
+
       long elapsed = (System.nanoTime() - start) / 1000000;
-      System.out.println("Tests passed! (" + elapsed + "ms)");
+      System.out.println();
+      System.out.println("Tests passed!");
+      System.out.printf("Total time:   %dms%n", elapsed);
+
+      if (iterations > 1) {
+        long sum = 0;
+        for (long time : times) sum += time;
+        System.out.printf("Mean time:    %dms%n", sum / times.length);
+        System.out.printf("Median time:  %dms%n", times[times.length / 2]);
+        System.out.printf("Fastest time: %dms%n", times[0]);
+        Arrays.sort(times);
+      }
+
+      System.exit(0);
     } catch (EOFException e) {
       System.err.println("Error: mask.sh didn't send the expected amount of output.");
+      System.exit(1);
     } catch (TestFailure testFailure) {
       TestCase test = testFailure.testCase;
       System.err.println("Test #" + test.index + " of " + luhnyBinTests.count + " failed:"

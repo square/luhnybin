@@ -67,8 +67,11 @@ class TestCase {
     }
 
     if (!Arrays.equals(expectedInputBytes, buffer)) {
+      System.out.println("X\n");
       throw new TestFailure(this, new String(buffer, ASCII));
     }
+
+    System.out.print(".");
   }
 
   static class Builder {
