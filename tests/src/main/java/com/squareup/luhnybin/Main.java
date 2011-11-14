@@ -135,16 +135,16 @@ public class Main extends TestSuite {
       if (testsPassed % 80 != 0) System.out.println();
       System.out.println("Tests passed!");
       System.out.println();
-      System.out.printf("Total time:   %dms%n", elapsed);
+      System.out.printf("Total time:   %,dms%n", elapsed);
 
       if (iterations > 1) {
         long sum = 0;
         for (long time : times) sum += time;
 
         Arrays.sort(times);
-        System.out.printf("Mean time:    %dus%n", sum / times.length);
-        System.out.printf("Median time:  %dus%n", times[times.length / 2]);
-        System.out.printf("Fastest time: %dus%n", times[0]);
+        System.out.printf("Mean time:    %,dus%n", sum / times.length);
+        System.out.printf("Median time:  %,dus%n", times[times.length / 2]);
+        System.out.printf("Fastest time: %,dus%n", times[0]);
       }
 
       System.out.println();
