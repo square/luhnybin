@@ -47,8 +47,8 @@ class TestSuite {
     for (TestCase testCase : testCases) testCase.writeTo(out);
   }
 
-  void check(InputStream in) throws TestFailure, IOException {
-    for (TestCase testCase : testCases) testCase.check(in);
+  void check(InputStream in, TestCase.Listener listener) throws IOException {
+    for (TestCase testCase : testCases) testCase.check(in, listener);
   }
 
   class Output {
