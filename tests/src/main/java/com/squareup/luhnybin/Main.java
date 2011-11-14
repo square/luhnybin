@@ -121,9 +121,9 @@ public class Main extends TestSuite {
         for (long time : times) sum += time;
 
         Arrays.sort(times);
-        System.out.printf("Mean time:    %d\u00B5s%n", sum / times.length);
-        System.out.printf("Median time:  %d\u00B5s%n", times[times.length / 2]);
-        System.out.printf("Fastest time: %d\u00B5s%n", times[0]);
+        System.out.printf("Mean time:    %dus%n", sum / times.length);
+        System.out.printf("Median time:  %dus%n", times[times.length / 2]);
+        System.out.printf("Fastest time: %dus%n", times[0]);
       }
 
       System.out.println();
