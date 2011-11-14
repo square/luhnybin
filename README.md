@@ -5,7 +5,7 @@ Coding Challenge: The Luhny Bin
 
 Computers break. Mistakes happen. At Square, we treat human error as a given. We anticipate potential slip-ups and implement safety measures to mitigate&mdash;and oftentimes completely eliminate&mdash;any repercussions.
 
-For example, Square's Luhn filter monitors logs and masks anything that looks like a credit card number. If a number like "4111 1111 1111 1111" were accidentally logged as part of an error message, our filter would replace it with "XXXX XXXX XXXX XXXX."
+For example, Square's Luhn filter monitors logs and masks anything that looks like a credit card number. If a number like "4111 1111 1111 1111" were accidentally logged as part of an error message, our filter would replace it with "XXXX XXXX XXXX XXXX" and page an on call engineer.
 
 The Luhn filter looks for sequences of digits that pass <a href="http://en.wikipedia.org/wiki/Luhn_algorithm">the Luhn check</a>, a simple checksum algorithm invented by Hans Peter Luhn in 1954. All valid credit card numbers pass the Luhn check, thereby enabling computer programs, like our log filter, to distinguish credit card numbers from random digit sequences.
 
