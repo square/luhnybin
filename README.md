@@ -11,24 +11,23 @@ The Luhn filter looks for sequences of digits that pass <a href="http://en.wikip
 
 The Luhn check works like this:
 
-1. Start from the *rightmost* digit and work left.
-2. Double every second digit.
-3. If a product has two digits, treat the digits independently.
-4. Sum each individual digit, including the non-doubled digits.
-5. Divide the result by 10.
-6. If the remainder is 0, the number passed the Luhn check.
+1. Starting from the *rightmost* digit and working left, double every second digit.
+1. If a product has two digits, treat the digits independently.
+1. Sum each individual digit, including the non-doubled digits.
+1. Divide the result by 10.
+1. If the remainder is 0, the number passed the Luhn check.
 
 For example, "5678" passes the Luhn check:
 
 1. Double every other digit: 10, 6, 14, 8
-2. Sum the individual digits: (1 + 0) + 6 + (1 + 4) + 8 = 20
-3. Divide the result by 10: 20 mod 10 = 0 **(Pass)**
+1. Sum the individual digits: (1 + 0) + 6 + (1 + 4) + 8 = 20
+1. Divide the result by 10: 20 mod 10 = 0 **(Pass)**
 
 "6789" does not:
 
 1. Double every other digit: 12, 7, 16, 9
-2. Sum the individual digits: (1 + 2) + 7 + (1 + 6) + 9 = 26
-3. Divide the result by 10: 26 mod 10 != 0 **(Fail)**
+1. Sum the individual digits: (1 + 2) + 7 + (1 + 6) + 9 = 26
+1. Divide the result by 10: 26 mod 10 != 0 **(Fail)**
 
 Now for the challenge...
 ------------------------
