@@ -32,7 +32,7 @@ For example, "5678" passes the Luhn check:
 Now for the challenge...
 ------------------------
 
-You find yourself trapped by a crippling but otherwise healthy fear of accidentally leaking credit card numbers. Your only escape: implement a [Unix-style program](http://en.wikipedia.org/wiki/Unix_philosophy#McIlroy:_A_Quarter_Century_of_Unix) that masks credit card numbers in text streams. Your program must pass a series of increasingly difficult challenges.
+You find yourself trapped by a crippling but otherwise healthy fear of accidentally leaking credit card numbers. Your only escape: implement a [Unix-style program](http://en.wikipedia.org/wiki/Unix_philosophy#McIlroy:_A_Quarter_Century_of_Unix) that masks credit card numbers. To succeed, your program must pass a series of increasingly difficult challenges.
 
 Think you've got what it takes? Write a command line program that reads ASCII text from standard input, masks sequences of digits that look like credit card numbers, and writes the filtered text to standard output. For the purposes of this challenge, a credit card number:
 
