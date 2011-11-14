@@ -3,7 +3,7 @@ Coding Challenge: The Luhny Bin
 
 > "To err is human; to forgive, divine." -Alexander Pope
 
-Computers break. Mistakes happen. At Square, we accept that human error is inevitable. We anticipate potential slip-ups and implement safety measures to mitigate&mdash;and oftentimes completely eliminate&mdash;any repercussions.
+Mistakes happen. At Square, we accept that human error is inevitable. We anticipate potential slip-ups and implement safety measures to mitigate&mdash;and oftentimes completely eliminate&mdash;any repercussions.
 
 For example, Square's Luhn filter monitors logs and masks anything that looks like a credit card number. If a number like "4111 1111 1111 1111" were accidentally logged as part of an error message, our filter would replace it with "XXXX XXXX XXXX XXXX" and page an on call engineer.
 
@@ -68,4 +68,6 @@ The first time you execute `run.sh`, you'll see a test failure:
 
 Modify `mask.sh` and make the tests pass. [Line feeds](http://en.wikipedia.org/wiki/Newline) delineate the test cases. If you pass a number on the command line, `run.sh` will repeat the test suite the specified number of times; this is useful for performance comparisons. The tests aren't set in stone&mdash;if you have an idea for improving the test suite, please submit a pull request.
 
-Once we have enough interesting submissions, I'll post a followup to [our blog](http://corner.squareup.com/) summarizing the results. I'll open source our own Java-based solution after everyone has had time to give the problem a shot. Good luck!
+Once we have enough interesting submissions, I'll summarize the results in a followup [blog](http://corner.squareup.com/) post and open source our own Java-based implementation. In the mean time, if you enjoy working with talented people on challenging problems like this, email your résumé to <a href="mailto:luhnybin@squareup.com">luhnybin@squareup.com</a>.
+
+Good luck!
