@@ -93,6 +93,8 @@ public class Main extends TestSuite {
       long[] times = new long[iterations];
 
       for (int i = 0; i < iterations; i++) {
+        final boolean lastIteration = i == iterations - 1;
+
         long iterationStart = System.nanoTime();
 
         // Write in the background. Writing can block if the buffer fills up.
@@ -101,6 +103,7 @@ public class Main extends TestSuite {
             try {
               bout.writeTo(out);
               out.flush();
+              if (lastIteration) out.close();
             } catch (IOException e) {
               e.printStackTrace();
               System.exit(1);
@@ -129,8 +132,6 @@ public class Main extends TestSuite {
         });
         times[i] = (System.nanoTime() - iterationStart) / 1000;
       }
-
-      out.close();
 
       long elapsed = (System.nanoTime() - start) / 1000000;
 
