@@ -21,6 +21,6 @@ import org.junit.Test;
 public class FormattingTest {
 
   @Test public void formatNumber() {
-    Assert.assertEquals("1234 5678 9012 3456", LuhnyBinTests.formatNumber("1234567890123456", ' '));
+    Assert.assertEquals("1234 5678 9012 3456", LuhnyBinTests.formatNumber("1234567890123456", " "));
   }
 }

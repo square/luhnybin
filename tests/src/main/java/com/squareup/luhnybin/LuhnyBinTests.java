@@ -82,12 +82,17 @@ public class LuhnyBinTests extends TestSuite {
         .send("9875610591081018250321")
         .expect("987XXXXXXXXXXXXXXXX321");
 
-    testFormatted(' ');
-    testFormatted('-');
+    testFormatted(" ");
+    testFormatted("-");
+    testFormatted("  ");
+    testFormatted("- ");
 
+    testFormatted(" ", 2);
+    testFormatted(" ", 3);
+    
     test("exception message containing a card #")
-        .send("java.lang.FakeException: " + formattedNumber(' ') + " is a card #.")
-        .expect("java.lang.FakeException: " + formattedMask(' ') + " is a card #.");
+        .send("java.lang.FakeException: " + formattedNumber(" ") + " is a card #.")
+        .expect("java.lang.FakeException: " + formattedMask(" ") + " is a card #.");
 
     test("non-matching message").sendAndExpect("4111 1111 1111 111 doesn't have enough digits.");
 
@@ -102,31 +107,49 @@ public class LuhnyBinTests extends TestSuite {
     test("long sequence of digits with no matches").sendAndExpect(nonMatchingSequence(1000));
   }
 
-  private void testFormatted(char delimeter) {
+  private void testFormatted(String delimeter) {
     test("16-digit # delimited with '" + delimeter + "'")
         .send(formattedNumber(delimeter))
         .expect(formattedMask(delimeter));
   }
 
-  private static String formattedNumber(char delimeter) {
+  private void testFormatted(String delimeter, int subLength) {
+	    test("16-digit # delimited with '" + delimeter + "' with segment lengths of " + subLength)
+        .send(formattedNumber(delimeter, subLength))
+        .expect(formattedMask(delimeter, subLength));
+  }
+  
+  private static String formattedNumber(String delimeter) {
     return formatNumber(randomNumber(16), delimeter);
   }
 
-  static String formatNumber(String number, char delimeter) {
+  private static String formattedNumber(String delimeter, int subLength) {
+	return formatNumber(randomNumber(16), delimeter, subLength);
+  }
+
+  static String formatNumber(String number, String delimeter) {
+	return formatNumber(number, delimeter, 4);
+  }
+  
+  static String formatNumber(String number, String delimeter, int subLength) {
     if (number.length() != 16) throw new IllegalArgumentException("Expected length of 16.");
     StringBuilder formatted = new StringBuilder();
-    for (int i = 0; i < 4; i++) {
-      formatted.append(number.substring(i * 4, (i * 4) + 4));
-      if (i < 3) formatted.append(delimeter);
+    for (int i = 0; i < 16/subLength; i++) {
+      formatted.append(number.substring(i * subLength, (i * subLength) + subLength));
+      if (i < (16/subLength) - 1) formatted.append(delimeter);
     }
     return formatted.toString();
   }
 
-  private static String formattedMask(char delimeter) {
+  private static String formattedMask(String delimeter) {
+	  return formattedMask(delimeter, 4);
+  }
+
+  private static String formattedMask(String delimeter, int subLength) {
     StringBuilder mask = new StringBuilder();
-    for (int i = 0; i < 4; i++) {
-      mask.append(repeatingSequence(MASK, 4));
-      if (i < 3) mask.append(delimeter);
+    for (int i = 0; i < 16/subLength; i++) {
+      mask.append(repeatingSequence(MASK, subLength));
+      if (i < (16/subLength) - 1) mask.append(delimeter);
     }
     return mask.toString();
   }
