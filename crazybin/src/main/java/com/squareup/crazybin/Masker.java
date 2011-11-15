@@ -20,7 +20,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Identifies and masks suspected credit card numbers.
+ * Identifies and masks suspected credit card numbers. Usage:
+ *
+ * <pre>
+ *   String masked = new Masker().mask(rawString);
+ * </pre>
  *
  * @author Bob Lee (bob@squareup.com)
  */
@@ -50,7 +54,7 @@ public class Masker {
   private int[] currentSums, nextSums;
   private int end, length;
 
-  private Masker() {
+  public Masker() {
     this.currentSums = new int[CAPACITY];
     this.nextSums = new int[CAPACITY];
   }
