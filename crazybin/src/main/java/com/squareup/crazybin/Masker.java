@@ -69,7 +69,7 @@ public class Masker {
     if (s.length() < MIN_LENGTH) return s;
     reset();
     char[] masked = null;
-    for (int i = 0; i < s.length(); i++) {
+    for (int i = skip(-1, s)+1; i < s.length(); i++) {
       char c = s.charAt(i);
       if (digit(c)) {
         push(c);
@@ -80,6 +80,7 @@ public class Masker {
         }
       } else if (!separator(c)) {
         reset();
+        i=skip(i,s);
       }
     }
     return masked == null ? s : new String(masked);
@@ -141,6 +142,22 @@ public class Masker {
     // We don't care about end or existing values in the arrays.
     length = 0;
   }
+
+  private int skip(int nonDigitNonSepIndex, String s) {
+    // Skip the index ahead
+    int len = s.length();
+    for (int i=nonDigitNonSepIndex + MIN_LENGTH; i<len; i+=MIN_LENGTH) {
+      char c = s.charAt(i);
+      if (digit(c) || separator(c)) return i-MIN_LENGTH;
+    }
+    // We've exhausted the string.
+    return len;
+  }
+  
+//  private int skip(int nonDigitNonSepIndex, String s) {
+//    // NOP version
+//    return nonDigitNonSepIndex;
+//  }
 
   private static int wrap(int index) {
     return index & (CAPACITY - 1);
