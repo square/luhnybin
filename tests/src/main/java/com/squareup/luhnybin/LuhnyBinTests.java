@@ -106,12 +106,12 @@ public class LuhnyBinTests extends TestSuite {
 
     test("long sequence of digits with no matches").sendAndExpect(nonMatchingSequence(1000));
     
-    for (int i=0; i<100; i++) {
-      test("realistic log message #1").sendAndExpect("[Sun Sep 25 17:27:22 2011] [notice] Digest: generating secret for digest authentication ...");
-      test("realistic log message #2").sendAndExpect("[Sun Sep 25 17:27:22 2011] [notice] Digest: done");
-      test("realistic log message #3").sendAndExpect("[Sun Sep 25 17:27:22 2011] [notice] Apache/2.2.17 (Unix) mod_ssl/2.2.17 OpenSSL/0.9.8r DAV/2 Phusion_Passenger/3.0.8 configured -- resuming normal operations");
-      test("realistic log message #4").sendAndExpect("[Sat Oct 08 12:11:21 2011] [warn] (2)No such file or directory: Cannot reinit SSLMutex");
-    }
+//    for (int i=0; i<100; i++) {
+//      test("realistic log message #1").sendAndExpect("[Sun Sep 25 17:27:22 2011] [notice] Digest: generating secret for digest authentication ...");
+//      test("realistic log message #2").sendAndExpect("[Sun Sep 25 17:27:22 2011] [notice] Digest: done");
+//      test("realistic log message #3").sendAndExpect("[Sun Sep 25 17:27:22 2011] [notice] Apache/2.2.17 (Unix) mod_ssl/2.2.17 OpenSSL/0.9.8r DAV/2 Phusion_Passenger/3.0.8 configured -- resuming normal operations");
+//      test("realistic log message #4").sendAndExpect("[Sat Oct 08 12:11:21 2011] [warn] (2)No such file or directory: Cannot reinit SSLMutex");
+//    }
   }
 
   private void testFormatted(String delimeter) {

@@ -52,7 +52,7 @@ public class Masker {
   }
 
   private int[] currentSums, nextSums;
-  private int end, length;
+  private int end, length, prevLen;
 
   public Masker() {
     this.currentSums = new int[CAPACITY];
@@ -66,6 +66,7 @@ public class Masker {
    * Not safe for concurrent use.
    */
   public String mask(String s) {
+    prevLen = 0;
     if (s.length() < MIN_LENGTH) return s;
     reset();
     char[] masked = null;
@@ -89,14 +90,20 @@ public class Masker {
   /**
    * Replaces count digits with 'X' ending at index last (inclusive). Skips separator characters.
    */
-  private static void mask(char[] masked, int last, int count) {
+  private void mask(char[] masked, int last, int count) {
+    int min = count - prevLen;
+    prevLen = count;
     while (count > 0) {
       char c = masked[last];
       if (digit(c)) {
         masked[last] = MASK;
+        min--;
         count--;
       } else if (c == MASK) {
-        // Already masked. Keep going in case the previous match was shorter.
+        // Already masked. Keep going if previous match was shorter.
+        if (min<1) {
+          break;
+        }
         count--;
       } else {
         // assert separator(c)
@@ -146,18 +153,13 @@ public class Masker {
   private int skip(int nonDigitNonSepIndex, String s) {
     // Skip the index ahead
     int len = s.length();
-    for (int i=nonDigitNonSepIndex + MIN_LENGTH; i<len; i+=MIN_LENGTH) {
+    for (int i=nonDigitNonSepIndex+MIN_LENGTH; i<len; i+=MIN_LENGTH) {
       char c = s.charAt(i);
       if (digit(c) || separator(c)) return i-MIN_LENGTH;
     }
     // We've exhausted the string.
     return len;
   }
-  
-//  private int skip(int nonDigitNonSepIndex, String s) {
-//    // NOP version
-//    return nonDigitNonSepIndex;
-//  }
 
   private static int wrap(int index) {
     return index & (CAPACITY - 1);
