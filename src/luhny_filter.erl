@@ -3,7 +3,7 @@
 % @since Nov 15, 2011
 -module(luhny_filter).
 
--export([start/0,process_line/1]).
+-export([start/0,process_line/1,do_within_process/1]).
 
 start() -> process_line(io:get_line("")).
 
@@ -15,13 +15,32 @@ do_process_line(Line) ->
     [_|RevLine] = lists:reverse( Line ),
     io:fwrite("~s~n",[lists:reverse( do_filter_line( RevLine ) )]).
 
+do_within_process(ResponsePid) ->
+    receive
+        { RevLine, MatchLength } -> ResponsePid ! { self(), do_filter_line( [], [], [], RevLine, MatchLength ) };
+        _ -> do_within_process(ResponsePid)
+    end.
+    
+do_wait( _Pid14, _Pid15, _Pid16, CurrentLines ) when is_list(CurrentLines), length(CurrentLines) =:= 3 ->
+     CurrentLines;
+do_wait( Pid14, Pid15, Pid16, CurrentLines ) ->
+    receive
+        { Pid14, Line14 } -> do_wait( Pid14, Pid15, Pid16, CurrentLines ++ [Line14] ) ;
+        { Pid15, Line15 } -> do_wait( Pid14, Pid15, Pid16, CurrentLines ++ [Line15] ) ;
+        { Pid16, Line16 } -> do_wait( Pid14, Pid15, Pid16, CurrentLines ++ [Line16] ) 
+    end.
+
 do_filter_line( RevLine ) ->
-    Line14 = do_filter_line( [], [], [], RevLine, 14 ), % slide window of 14
-    Line15 = do_filter_line( [], [], [], RevLine, 15 ), % slide window of 15
-    Line16 = do_filter_line( [], [], [], RevLine, 16 ), % slide window of 16
-    L0 = do_merge(Line14, RevLine),                     % merge the results; X always takes over the digit.
-    L1 = do_merge(Line15, L0),
-    do_merge(Line16, L1).
+    Pid14 = spawn( luhny_filter, do_within_process, [self()] ),
+    Pid15 = spawn( luhny_filter, do_within_process, [self()] ),
+    Pid16 = spawn( luhny_filter, do_within_process, [self()] ),
+    
+    Pid14 ! { RevLine, 14 },
+    Pid15 ! { RevLine, 15 },
+    Pid16 ! { RevLine, 16 },
+    
+    MaskedLines = do_wait( Pid14, Pid15, Pid16, [] ),
+    lists:foldl( fun(MLine, FLine) -> do_merge(MLine,FLine) end, RevLine, MaskedLines).
 
 do_filter_line( Prefix, PotentialCC, DigitsOnly, [Digit|Tail], MatchLength ) when Digit > 47, Digit < 58, length(DigitsOnly) == (MatchLength - 1) ->
     case is_luhny_checked( DigitsOnly ++ [Digit] ) of
