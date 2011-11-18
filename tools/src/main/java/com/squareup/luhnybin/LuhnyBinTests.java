@@ -56,6 +56,10 @@ public class LuhnyBinTests extends TestSuite {
         .send("00" + randomNumber(14))
         .expect(mask(16));
 
+    test("2 non-matching digits followed by a 14-digit #")
+        .send("1256613959932537")
+        .expect("12XXXXXXXXXXXXXX");
+
     test("14-digit # embedded in a 16-digit #")
         .send(nestedNumber())
         .expect(mask(16));
