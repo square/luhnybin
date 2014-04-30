@@ -1,4 +1,3 @@
 #!/bin/sh
 
-# Call your program here instead of cat.
-cat
+java -jar tools/target/luhnybin-clj-0.1.0-SNAPSHOT-standalone.jar
