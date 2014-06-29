@@ -68,6 +68,15 @@ public class LuhnyBinTests extends TestSuite {
         .send("9875610591081018250321")
         .expect("987XXXXXXXXXXXXXXXX321");
 
+    String nonMatching = nonMatchingSequence(15);
+    test("14-digit # with non-matching digits in front")
+        .send(nonMatching + computeLast(nonMatching.subSequence(2, 15)))
+        .expect(nonMatching.subSequence(0, 2) + mask(14));
+
+    test("two 14-digit #s in a row")
+        .send("5661395993253756613959932537")
+        .expect(mask(28));
+
     testFormatted(' ');
     testFormatted('-');
 
